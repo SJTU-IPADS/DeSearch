@@ -1,0 +1,16 @@
+/*
+ * useless EDL
+ */
+
+enclave {
+    include "sgx_eid.h"
+
+    trusted {
+        public void none(void);
+    };
+
+    untrusted {
+        void ocall_print_string([in, string] const char * str);
+    };
+
+};

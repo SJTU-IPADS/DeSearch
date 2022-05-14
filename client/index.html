@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8'>
+    <title>Desearch Web</title>
+    <style>
+
+      body {
+        background-color: white;
+        margin: 200px 40%;
+      }
+
+      form {
+        background-color: black;
+        width: 300px;
+        height: 44px;
+        border-radius: 5px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+      }
+
+      input {
+        all: unset;
+        font: 16px system-ui;
+        color: #fff;
+        height: 100%;
+        width: 100%;
+        padding: 6px 10px;
+      }
+
+      ::placeholder {
+        color: #fff;
+        opacity: 0.7; 
+      }
+
+      svg {
+        color: #fff;
+        fill: currentColor;
+        width: 24px;
+        height: 24px;
+        padding: 10px;
+      }
+
+      button {
+        all: unset;
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="logo.jpg" width="300" height="90">
+    <form role="search" id="form">
+      <input type="search" id="query" name="q" placeholder="Search...">
+      <button id="submit_query">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"> <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/> </svg>
+      </button>
+      <button id="submit_verify">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/> <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/> </svg>
+      </button>
+    </form>
+
+    <script>
+      const f = document.getElementById('form');
+      const q = document.getElementById('query');
+
+      document.getElementById("submit_query").onclick = function() {submit_query()};
+      document.getElementById("submit_verify").onclick = function() {submit_verify()};
+
+      function submit_query() {
+        // event.preventDefault();
+        const url = 'http://127.0.0.1:12000/query/' + q.value + '/page/1' ;
+        const win = window.open(url, '_blank');
+        win.focus();
+      }
+
+      function submit_verify(event) {
+        // event.preventDefault();
+        const url = 'http://127.0.0.1:12000/verify/' ;
+        const win = window.open(url, '_blank');
+        win.focus();
+      }
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+/*
+ *
+ */
+
+enclave {
+    include "sgx_eid.h"
+    
+    from "sgx_tstdc.edl" import *;
+    
+    trusted{
+
+        // desearch crawler API
+        public void ecall_parse_items(
+            [user_check] void * app_input, int app_input_size,
+            [user_check] void * app_output, int app_output_size,
+            [user_check] void * app_witness, int app_witness_size
+        );
+
+        // desearch indexer API
+        public void ecall_build_index(
+            [user_check] void * index_inputs, int index_inputs_size,
+            [user_check] char * index_output, [in, out] int * index_output_size,
+            [user_check] void * index_witness, int index_witness_size
+        );
+
+        // desearch reducer API
+        public void ecall_do_merge(
+            [user_check] const char * index1, int sz_1,
+            [user_check] const char * index2, int sz_2,
+            [user_check] char * new_index, [in, out] int * new_sz,
+            [user_check] void * reducer_witness, int reducer_witness_size
+        );
+
+        // desearch querier API
+        public void ecall_querier_setup(
+            [user_check] const char * b_index_input, int b_index_input_size);
+
+        public void ecall_do_query(
+            [user_check] const char * querier_request, int querier_request_size,
+            [user_check] char * querier_response, int querier_response_size
+        );
+    
+        // ZeroTrace ecall APIs
+        public uint32_t getNewORAMInstanceID(uint8_t oram_type);
+        public uint8_t createNewORAMInstance(uint32_t instance_id, uint32_t maxBlocks, uint32_t dataSize, uint32_t stashSize, uint32_t oblivious_flag, uint32_t recursion_data_size, int8_t recursion_levels, uint8_t oram_type, uint8_t pZ);
+     
+        public void accessInterface(uint32_t instance_id, uint8_t oram_type, [in, size = request_size] unsigned char *request, [out, size = response_size] unsigned char *response, uint32_t request_size, uint32_t response_size);
+        public void accessBulkReadInterface(uint32_t instance_id, uint8_t oram_type, uint32_t no_of_requests, [in, size = request_size] unsigned char* request, [out, size = response_size] unsigned char *response, uint32_t request_size, uint32_t response_size);
+
+    };
+
+    untrusted {
+        void ocall_print_string([in, string] const char *str);
+
+        // ZeroTrace ocall APIs
+        void build_fetchChildHash(uint32_t instance_id, uint8_t oram_type, uint32_t left, uint32_t right, [out, size=hash_size] unsigned char* lchild, [out, size=hash_size] unsigned char* rchild, uint32_t hash_size, uint32_t recursion_level);
+
+        uint8_t uploadBucket_OCALL(uint32_t instance_id, uint8_t oram_type, [in,size = bucket_size] unsigned char* serialized_bucket, uint32_t bucket_size , uint32_t label, [in,size = hash_size] unsigned char* hash, uint32_t hash_size , uint32_t size_for_level, uint8_t recursion_level);
+        uint8_t downloadBucket_OCALL(uint32_t instance_id, uint8_t oram_type, [out,size = bucket_size] unsigned char* serialized_bucket, uint32_t bucket_size , uint32_t label, [out,size = hash_size] unsigned char* hash, uint32_t hash_size, uint32_t size_for_level, uint8_t level);
+
+        uint8_t downloadPath_OCALL(uint32_t instance_id, uint8_t oram_type, [out,size = path_size] unsigned char* serialized_path, uint32_t path_size , uint32_t label,[out,size = path_hash_size] unsigned char *path_hash, uint32_t path_hash_size, uint8_t level, uint32_t D_lev);
+        uint8_t uploadPath_OCALL(uint32_t instance_id, uint8_t oram_type, [in,size = path_size] unsigned char* serialized_path, uint32_t path_size , uint32_t label, [in,size = path_hash_size] unsigned char *path_hash, uint32_t path_hash_size, uint8_t level, uint32_t D_level);
+
+    };
+
+};
