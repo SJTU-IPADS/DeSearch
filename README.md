@@ -7,6 +7,21 @@ The current desearch implementation relies on Intel SGX as the trusted hardware 
 
 **Warning: This repo hosts an academic proof-of-concept prototype and has not received a careful code review.**
 
+## Publication
+
+Please refer to [our OSDI'21 paper](https://www.usenix.org/conference/osdi21/presentation/li) for more details.
+
+~~~
+@inproceedings{li2021desearch,
+  author    = {Mingyu Li and Jinhao Zhu and Tianxu Zhang and Cheng Tan and Yubin Xia and Sebastian Angel and Haibo Chen},
+  title     = {Bringing Decentralized Search to Decentralized Services},
+  booktitle = {15th {USENIX} Symposium on Operating Systems Design and Implementation, {OSDI} 2021},
+  pages     = {331--347},
+  publisher = {{USENIX} Association},
+  year      = {2021},
+}
+~~~
+
 ## Getting Started
 
 Hardware Requirement: SGX-capable desktops or SGX-capable cloud machines. To check whether your machine supports SGX, please refer to [Intel SGX Hardware](https://github.com/ayeks/SGX-hardware).
@@ -103,9 +118,9 @@ See [executor/README.md](executor/README.md)
 
 ## Contributors
 
-- Mingyu Li
-- Jinhao Zhu
-- Tianxu Zhang
+- Mingyu Li: maxullee [at] sjtu [dot] edu [dot] cn
+- Jinhao Zhu: zhujinhao [at] sjtu [dot] edu [dot] cn
+- Tianxu Zhang: zhangtianxu [at] sjtu [dot] edu [dot] cn
 - Sajin Sasy: [ZeroTrace](https://github.com/sshsshy/ZeroTrace)
 
 ## License
