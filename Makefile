@@ -4,8 +4,7 @@ all:
 	cd client ; make all -j8 ; cd -
 	cd manager ; make all -j8 ; cd -
 	cd executor ; make all -j8 ; cd -
-
-	cd kanban/deps ; make hdr_histogram ; make linenoise
+	cd kanban/deps ; make hdr_histogram linenoise jemalloc -j8
 	cd kanban ; make -j8
 	cd kanban ; ./src/redis-server ./redis.conf &
 	sleep 1
