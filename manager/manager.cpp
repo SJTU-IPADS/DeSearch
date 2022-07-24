@@ -1,9 +1,9 @@
+#include <algorithm>
+#include <iostream>
 #include <set>
+#include <stdint.h>
 #include <string>
 #include <unistd.h>
-#include <stdint.h>
-#include <iostream>
-#include <algorithm>
 
 #include "config.hpp"
 #include "manager.hpp"
@@ -36,8 +36,7 @@ uint8_t pkey[32] = {
 // use Kanban to simulate ledger
 static auto kb = Redis(KANBAN_ADDR);
 
-static
-string get_epoch(void)
+static string get_epoch(void)
 {
     // get epoch string from Kanban
     auto _epoch_packet = kb.get("EPOCH");
@@ -56,14 +55,13 @@ string get_epoch(void)
 
     // verify the epoch packet
     ed25519_string_to_sig(string_sig.data(), _sig);
-    bool res = ed25519_verify(pkey, (uint8_t *)string_epoch.data(), string_epoch.length(), _sig);
+    bool res = ed25519_verify(pkey, (uint8_t*)string_epoch.data(), string_epoch.length(), _sig);
     // printf("EPOCH Verification %s\n", res ? "passed" : "failed");
 
     return res ? string_epoch : "-1";
 }
 
-static
-int get_epoch_int(void)
+static int get_epoch_int(void)
 {
     string string_epoch = get_epoch();
     return stoi(string_epoch, nullptr, 10);
@@ -72,62 +70,71 @@ int get_epoch_int(void)
 // only invoked when no epoch at all from the ledger
 void manager::init_epoch(void)
 {
-    if ("-1" != get_epoch()) return; // already init'ed
+    if ("-1" != get_epoch())
+        return; // already init'ed
 
-    uint8_t _sig[65]  = "";
+    uint8_t _sig[65] = "";
     string first_epoch = "1";
-    ed25519_sign(_sig, skey, (uint8_t *)first_epoch.data(), first_epoch.length());
+    ed25519_sign(_sig, skey, (uint8_t*)first_epoch.data(), first_epoch.length());
 
     char sig[129] = "";
     ed25519_sig_to_string(_sig, sig);
 
     JSON epoch_packet;
     epoch_packet["EPOCH"] = first_epoch;
-    epoch_packet["SIG"]   = sig;
+    epoch_packet["SIG"] = sig;
 
     kb.set("EPOCH", epoch_packet.dump());
 
-    cout << "manager::manager init epoch" << endl << endl;
+    cout << "manager::manager init epoch" << endl
+         << endl;
 }
 
 // 'increment_epoch' is only available to the manager
 void manager::increment_epoch(void)
 {
-    if ("-1" == get_epoch()) init_epoch();
+    if ("-1" == get_epoch())
+        init_epoch();
+
     string current_epoch = get_epoch();
     int current_epoch_int = get_epoch_int();
 
     // make a root hash for all keys related to executors' witnesses
 
-    set <string> witness_keys;
+    set<string> witness_keys;
     for (;;) {
-        
+
         string epoch_witness_key = "WITNESS-#EPOCH" + current_epoch;
         kb.smembers(epoch_witness_key, ::inserter(witness_keys, witness_keys.begin()));
 
         int expected_key_size = 0;
-        if (1 == current_epoch_int) expected_key_size = ITEMS_POOL_MAX;
-        else if (2 == current_epoch_int) expected_key_size = ITEMS_POOL_MAX + INDEX_POOL_MAX;
-        else expected_key_size = ITEMS_POOL_MAX + INDEX_POOL_MAX * 2;
+        if (1 == current_epoch_int)
+            expected_key_size = ITEMS_POOL_MAX;
+        else if (2 == current_epoch_int)
+            expected_key_size = ITEMS_POOL_MAX + INDEX_POOL_MAX;
+        else
+            expected_key_size = ITEMS_POOL_MAX + INDEX_POOL_MAX * 2;
 
-//        cout << epoch_witness_key << " witness_keys.size " << witness_keys.size() << endl;
-//        cout << epoch_witness_key << " expected_key_size " << expected_key_size << endl;
+        // cout << epoch_witness_key << " witness_keys.size " << witness_keys.size() << endl;
+        // cout << epoch_witness_key << " expected_key_size " << expected_key_size << endl;
 
-        if (witness_keys.size() >= expected_key_size) break;
+        if (witness_keys.size() >= expected_key_size)
+            break;
         witness_keys.clear();
 
         sleep(1);
     }
 
     // summary all keys
-    vector <string> string_witness_keys;
+    vector<string> string_witness_keys;
     string_witness_keys.assign(witness_keys.begin(), witness_keys.end());
     // use a particular sorting algorithm
     sort(string_witness_keys.begin(), string_witness_keys.end(),
-        [] (string &s1, string &s2) { return s1.back() < s2.back(); });
+        [](string& s1, string& s2) { return s1.back() < s2.back(); });
     // merge all keys into one string
     string omni_string = "";
-    for (auto & s : string_witness_keys) omni_string += s;
+    for (auto& s : string_witness_keys)
+        omni_string += s;
     char root_hash[65] = "";
     sha256_string(omni_string.data(), omni_string.size(), root_hash);
 
@@ -138,19 +145,20 @@ void manager::increment_epoch(void)
     // increment the global epoch
     string new_epoch = to_string(get_epoch_int() + 1); // increment
 
-    uint8_t _sig[65]  = "";
-    ed25519_sign(_sig, skey, (uint8_t *)new_epoch.data(), new_epoch.length());
+    uint8_t _sig[65] = "";
+    ed25519_sign(_sig, skey, (uint8_t*)new_epoch.data(), new_epoch.length());
 
     char sig[129] = "";
     ed25519_sig_to_string(_sig, sig);
 
     JSON epoch_packet;
     epoch_packet["EPOCH"] = new_epoch;
-    epoch_packet["SIG"]   = sig;
+    epoch_packet["SIG"] = sig;
 
     kb.set("EPOCH", epoch_packet.dump());
 
-    cout << "manager::manager another epoch " << current_epoch_int + 1 << endl << endl;
+    cout << "manager::manager another epoch " << current_epoch_int + 1 << endl
+         << endl;
 }
 
 manager::manager(void)
@@ -168,5 +176,4 @@ manager::manager(void)
 
 manager::~manager(void)
 {
-
 }

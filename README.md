@@ -42,7 +42,7 @@ Under Ubuntu 20.04, building desearch executors requires the following depecenci
 You can refer to the `deps` folder for the correct versions of Redis, Hiredis, and Redis++.
 
 ```shell
-apt intall -y libboost-all-dev
+apt install -y libboost-all-dev
 
 cd deps
 tar zxf redis-6.2.6.tar.gz
@@ -104,7 +104,7 @@ make all
 Then double click the `client/index.html`, or use a fancy Web entry `client/WebUI/index.html`.
 
 ![demo](img/demo.png)
-![fanyc](img/fancy.png)
+![fancy](img/fancy.png)
 
 ### How to build a distributed setup
 

@@ -5,8 +5,8 @@
 using namespace sw::redis;
 
 #include <cstdio>
-#include <unistd.h>
 #include <string>
+#include <unistd.h>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ int main(void)
     kb.set("SHARDING-MAX", to_string(INDEX_POOL_MAX));
     printf("There will be %d index shards.\n\n", INDEX_POOL_MAX);
 
-    for (int epoch = 1; ;epoch++) {
+    for (int epoch = 1;; epoch++) {
 
 #ifdef USE_STEEMIT_ITEM
         // Steemit task management
@@ -29,10 +29,12 @@ int main(void)
         kb.set("Steemit-Block-ID", to_string(steemit_block_id));
 
         // skip the number of items that were obtained
-        steemit_block_id += ITEMS_BULK_MAX*ITEMS_POOL_MAX;
+        steemit_block_id += ITEMS_BULK_MAX * ITEMS_POOL_MAX;
 #endif
-        if (epoch <= 2) sleep(epoch);
-        else sleep(TUNED_EPOCH_SECOND);
+        if (epoch <= 2)
+            sleep(epoch);
+        else
+            sleep(TUNED_EPOCH_SECOND);
         // sleep(DEFAULT_EPOCH_SECOND);
 
         m.increment_epoch();

@@ -5,18 +5,18 @@
 #include "oasm_lib.h"
 
 class Stash {
-    private:
+private:
 
     struct nodev2 * start;
-    //For non-oblivious stash:		
+    // For non-oblivious stash:		
     uint32_t current_size;
     uint32_t stash_data_size;
-    //Static upper bound on stash size
+    // Static upper bound on stash size
     uint32_t STASH_SIZE;
-    //To test if block is dummy, it needs the gN value 
+    // To test if block is dummy, it needs the gN value 
     uint64_t gN;
 
-    public:
+public:
 
     Stash();
     Stash(uint32_t STASH_SIZE, uint32_t data_size, uint32_t gN);

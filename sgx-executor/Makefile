@@ -322,4 +322,4 @@ $(Enclave_Name_3): Enclave3.so
 .PHONY: clean
 
 clean:
-	@rm -rf .config_* $(App_Name) *.so *.a App/*.o Enclave1/*.o Enclave1/*_t.* Enclave1/*_u.* Enclave2/*.o Enclave2/*_t.* Enclave2/*_u.* Enclave3/*.o Enclave3/*_t.* Enclave3/*_u.* $(Enclave_Cpp_Objects_2) $(Enclave_Asm_Objects)
+	@rm -rf .config_* $(App_Name) *.so *.a App/*.o App/libed25519/*.o App/ZeroTrace/*.o Enclave1/*.o Enclave1/*_t.* Enclave1/*_u.* Enclave2/*.o Enclave2/*_t.* Enclave2/*_u.* Enclave3/*.o Enclave3/*_t.* Enclave3/*_u.* $(Enclave_Cpp_Objects_2) $(Enclave_Asm_Objects)

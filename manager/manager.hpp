@@ -1,5 +1,4 @@
-class manager
-{
+class manager {
 public:
     manager();
     ~manager();

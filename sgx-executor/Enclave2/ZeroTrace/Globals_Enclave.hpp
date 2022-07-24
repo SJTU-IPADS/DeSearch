@@ -37,14 +37,6 @@ struct nodev2 {
     struct nodev2 * next;
 };
 
-//TODO : Do we need this ?
-struct request_parameters {
-    char opType;
-    uint32_t id;
-    uint32_t position_in_id;
-    uint32_t level;
-};
-
 void printf(const char * fmt, ...);
 
 void displaySerializedBlock(unsigned char * serialized_result_block, uint32_t level, uint32_t recursion_levels, uint32_t x);

@@ -8,14 +8,14 @@
  */
 
 #include <algorithm>
-#include <string>
 #include <random>
+#include <string>
 #include <vector>
 
 using namespace std;
 
 // this impl. uses a straightforward method to register a querier exexcutor
-void register_live_querier(const string & epoch, const string & partition, const string & addr)
+void register_live_querier(const string& epoch, const string& partition, const string& addr)
 {
     kb.rpush("NODE-#EPOCH" + epoch + "-v" + partition, addr);
 }
@@ -25,14 +25,14 @@ void register_live_querier(const string & epoch, const string & partition, const
 // if a certain partition contains zero live node, still return the list
 // because users might also want the results, and they can learn from the witness verification process
 // NOTE: this impl. cannot detect failure querier, which may yield incomplete list
-void get_live_querier(const string & epoch, vector <string> & live_list)
+void get_live_querier(const string& epoch, vector<string>& live_list)
 {
     // initialize the random number generator for shuffling
     random_device rd;
     mt19937 rng(rd());
 
     for (int partition = 1; partition <= INDEX_POOL_MAX; partition++) {
-        vector <string> partition_list;
+        vector<string> partition_list;
         kb.lrange("NODE-#EPOCH" + epoch + "-v" + to_string(partition),
             0, -1, std::back_inserter(partition_list));
         shuffle(partition_list.begin(), partition_list.end(), rng);

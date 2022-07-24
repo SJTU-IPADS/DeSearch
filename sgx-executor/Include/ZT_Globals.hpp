@@ -28,7 +28,7 @@
 #define EC_KEY_SIZE 32
 #define KEY_LENGTH 16
 #define TAG_SIZE 16
-#define CLOCKS_PER_MS (CLOCKS_PER_SEC/1000)
+#define CLOCKS_PER_MS (CLOCKS_PER_SEC / 1000)
 #define AES_GCM_BLOCK_SIZE_IN_BYTES 16
 #define PRIME256V1_KEY_SIZE 32
 
@@ -54,18 +54,17 @@ enum LSORAM_ERRORCODES {
 };
 
 #ifndef TRUE
-# define TRUE 1
+#define TRUE 1
 #endif
 
 #ifndef FALSE
-# define FALSE 0
+#define FALSE 0
 #endif
 
 typedef struct {
-    unsigned char * key;
-    unsigned char * value;
-}
-tuple;
+    unsigned char* key;
+    unsigned char* value;
+} tuple;
 
 typedef struct detailed_microbenchmarks {
     double posmap_time;
@@ -74,19 +73,21 @@ typedef struct detailed_microbenchmarks {
     double eviction_time;
     double upload_path_time;
     double total_time;
-}
-det_mb;
+} det_mb;
 
 //Inline Functions
-inline uint32_t iBitsPrefix(uint32_t n, uint32_t w, uint32_t i) {
+inline uint32_t iBitsPrefix(uint32_t n, uint32_t w, uint32_t i)
+{
     return (~((1 << (w - i)) - 1)) & n;
 }
 
-inline uint32_t ShiftBy(uint32_t n, uint32_t w) {
+inline uint32_t ShiftBy(uint32_t n, uint32_t w)
+{
     return (n >> w);
 }
 
-inline uint32_t noOfBitsIn(uint32_t local_deepest) {
+inline uint32_t noOfBitsIn(uint32_t local_deepest)
+{
     uint32_t count = 0;
     while (local_deepest != 0) {
         local_deepest = local_deepest >> 1;
@@ -95,41 +96,49 @@ inline uint32_t noOfBitsIn(uint32_t local_deepest) {
     return count;
 }
 
-inline bool isBlockDummy(unsigned char * serialized_block, uint64_t gN) {
-    bool dummy_flag = * ((uint32_t * )(serialized_block + 16)) == gN;
+inline bool isBlockDummy(unsigned char* serialized_block, uint64_t gN)
+{
+    bool dummy_flag = *((uint32_t*)(serialized_block + 16)) == gN;
     return dummy_flag;
 }
 
-inline uint32_t getId(unsigned char * serialized_block) {
-    uint32_t id = * ((uint32_t * )(serialized_block + 16));
+inline uint32_t getId(unsigned char* serialized_block)
+{
+    uint32_t id = *((uint32_t*)(serialized_block + 16));
     return id;
 }
 
-inline uint32_t * getIdPtr(unsigned char * serialized_block) {
-    uint32_t * id = ((uint32_t * )(serialized_block + 16));
+inline uint32_t* getIdPtr(unsigned char* serialized_block)
+{
+    uint32_t* id = ((uint32_t*)(serialized_block + 16));
     return id;
 }
 
-inline void setId(unsigned char * serialized_block, uint32_t new_id) {
-    *((uint32_t * )(serialized_block + 16)) = new_id;
+inline void setId(unsigned char* serialized_block, uint32_t new_id)
+{
+    *((uint32_t*)(serialized_block + 16)) = new_id;
 }
 
-inline uint32_t getTreeLabel(unsigned char * serialized_block) {
-    uint32_t treeLabel = * ((uint32_t * )(serialized_block + 20));
+inline uint32_t getTreeLabel(unsigned char* serialized_block)
+{
+    uint32_t treeLabel = *((uint32_t*)(serialized_block + 20));
     return treeLabel;
 }
 
-inline uint32_t * getTreeLabelPtr(unsigned char * serialized_block) {
-    uint32_t * labelptr = ((uint32_t * )(serialized_block + 20));
+inline uint32_t* getTreeLabelPtr(unsigned char* serialized_block)
+{
+    uint32_t* labelptr = ((uint32_t*)(serialized_block + 20));
     return labelptr;
 }
 
-inline void setTreeLabel(unsigned char * serialized_block, uint32_t new_treelabel) {
-    *((uint32_t * )(serialized_block + 20)) = new_treelabel;
+inline void setTreeLabel(unsigned char* serialized_block, uint32_t new_treelabel)
+{
+    *((uint32_t*)(serialized_block + 20)) = new_treelabel;
 }
 
-inline unsigned char * getDataPtr(unsigned char * decrypted_path_ptr) {
-    return (unsigned char * )(decrypted_path_ptr + 24);
+inline unsigned char* getDataPtr(unsigned char* decrypted_path_ptr)
+{
+    return (unsigned char*)(decrypted_path_ptr + 24);
 }
 
 #define __GLOBALS__
