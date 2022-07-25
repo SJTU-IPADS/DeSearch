@@ -37,7 +37,7 @@ void aes_dec_serialized(unsigned char* encrypted_block, uint32_t data_size, unsi
 
 void aes_enc_serialized(unsigned char* decrypted_block, uint32_t data_size, unsigned char* encrypted_block, unsigned char* aes_key)
 {
-    //Add generate_randomness() for nonce.
+    // Add generate_randomness() for nonce.
     unsigned char* ctr = (unsigned char*)malloc(NONCE_LENGTH);
     memcpy(encrypted_block, ctr, NONCE_LENGTH);
 

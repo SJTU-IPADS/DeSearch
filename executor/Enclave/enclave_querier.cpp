@@ -61,6 +61,8 @@ void ecall_do_query(
     const char * querier_request, int querier_request_size,
     char * querier_response, int querier_response_size)
 {
+    // XXX: use openssl AES-GCM for secure channel
+
     // STEP 0: parse the JSON request, split keywords and page number
     string s_request = querier_request;
     JSON j_keywords = JSON::Load(s_request)["keywords"];

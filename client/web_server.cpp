@@ -48,13 +48,12 @@ const int local_port = 12000;
 
 extern uint8_t pkey[32];
 
-#include "encrypt.h"
 #include "utility.hpp"
 #include "live_node.hpp"
 
 #define BUFFER_SIZE 10240
 
-void send_request(
+static void send_request(
     const char *SERVER_ADDR, int SERVER_PORT,
     const string &request, string &response)
 {
@@ -80,7 +79,6 @@ void send_request(
         exit(EXIT_FAILURE);
     }
 
-    // TODO: use openssl AES-GCM for secure channel
     send(client_sockfd, request.data(), request.length(), 0);
 
     data_length = recv(client_sockfd, recvbuf, BUFFER_SIZE, 0);
@@ -174,7 +172,10 @@ static void go_search(string & REQUEST, string & RESPONSE)
     for (auto node : local_list) {
         string addr = trim_string(JSON::Load(node)["addr"].dump());
         int port = stoi(JSON::Load(node)["port"].dump(), nullptr, 10);
+        
+        // XXX: use openssl AES-GCM for secure channel
         send_request(addr.data(), port, REQUEST, RESPONSE);
+        
         extract_witness( JSON::Load(RESPONSE)["witness"].dump() );
         extract_response( JSON::Load(RESPONSE)["response"].dump() );
     }
@@ -197,12 +198,12 @@ static void go_verify(string & RESPONSE)
         }
         string tmp = "Please search first!";
 
-	do_local_verify(verify_in.dump(), tmp);
+	    do_local_verify(verify_in.dump(), tmp);
 
-	JSON real_query;
-	real_query["results"] = tmp;
+	    JSON real_query;
+	    real_query["results"] = tmp;
 
-	RESPONSE = real_query.dump();
+	    RESPONSE = real_query.dump();
         
         auto end = chrono::steady_clock::now();
         chrono::duration<double> elapsed_seconds = end - start;

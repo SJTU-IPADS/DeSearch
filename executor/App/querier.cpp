@@ -150,7 +150,6 @@ void querier_loop(const char* addr, int port)
 
         do_query(recvbuf, data_length, sendbuf, BUFFER_SIZE);
 
-        // TODO: use openssl AES-GCM for secure channel
         send(client_sockfd, sendbuf, strlen(sendbuf), 0);
     }
 out:

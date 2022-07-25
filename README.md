@@ -65,7 +65,7 @@ Kanban is an unmodified [Redis](https://redis.io/) that leverages relatively che
 Simply start the Redis server:
 ```shell
 cd Kanban
-cd deps && make hdr_histogram && make linenoise && make jemalloc
+cd deps && make hdr_histogram linenoise jemalloc
 cd - && make all
 ./src/redis-server ./redis.conf
 ```
