@@ -1,9 +1,10 @@
 # Desearch
 
 Desearch is an experimental system towards a decentralized search engine.
-To achieve good scalability and fault tolerance, desearch decouples computation and storage using a stateless trusted network and stateful blockchain-regulated cloud store.
 
-The current desearch implementation relies on Intel SGX as the trusted hardware and Redis as the store.
+To achieve good scalability and fault tolerance, desearch decouples computation and storage using a *stateless* trusted network and a *stateful*  cloud store regulated by blockchain.
+
+The current desearch implementation uses Intel SGX as the trusted hardware and Redis as the store.
 
 **Warning: This repo hosts an academic proof-of-concept prototype and has not received a careful code review.**
 
